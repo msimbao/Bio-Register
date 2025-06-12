@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>CSV Editor</title>
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"> -->
+    <link rel="stylesheet" href="static/datatables/datatables.css">
+  <link rel="stylesheet" href="static/foundation/css/foundation.min.css">
+    <link rel="stylesheet" href="static/bootstrap/js/bootstrap.min.js">
+
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -30,12 +35,17 @@
   </style>
 </head>
 <body>
-  <h2>Editable CSV Table</h2>
-  <table id="csvTable" class="display" style="width:100%"></table>
+  <h1>Christ Embassy Palm Drive</h1>
+  <h3>Bio-Register</h3>
   <button id="saveBtn">💾 Save</button>
+  <table id="csvTable" class="display" style="width:100%"></table>
 
-  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="static/jquery/jquery.min.js"></script>
+  <script src="static/datatables/datatables.min.js"></script>
+  <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/datatables/datatables.altEditor.js"></script>
+
+
   <script>
     let table;
     let headers = [];
@@ -63,7 +73,52 @@
         const data = rows.slice(1);
 
         table = $('#csvTable').DataTable({
+          initComplete: function() {
+      var table = this.api();
+
+      // Add filtering
+      table.columns([0,1,2,3]).every(function() {
+        var column = this;
+
+        var select = $('<select><option value=""></option></select>')
+          .appendTo($("thead tr:eq(1) td").eq(this.index()))
+          .on('change', function() {
+            var val = $.fn.dataTable.util.escapeRegex(
+              $(this).val()
+            );
+
+            column
+              .search(val ? '^' + val + '$' : '', true, false)
+              .draw();
+          });
+
+        column.data().unique().sort().each(function(d, j) {
+          select.append('<option value="' + d + '">' + d + '</option>');
+        })
+      })
+    },
           data: data,
+          altEditor:true,
+          dom: 'Bfrtip',        // Needs button container
+    select: 'single',
+    responsive: true,
+    altEditor: true,     // Enable altEditor
+    buttons: [
+        {
+        text: 'Add',
+        name: 'add'        // do not change name
+        },
+        {
+        extend: 'selected', // Bind to Selected row
+        text: 'Edit',
+        name: 'edit'        // do not change name
+        },
+        {
+        extend: 'selected', // Bind to Selected row
+        text: 'Delete',
+        name: 'delete'      // do not change name
+        }
+    ],
           columns: headers.map(h => ({ title: h })),
           createdRow: function (row) {
             $('td', row).attr('contenteditable', 'true');
