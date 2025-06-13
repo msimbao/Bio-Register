@@ -4,7 +4,7 @@ import webbrowser
 import os
 
 PORT = 8000
-FILENAME = "data.csv"
+FILENAME = "data/data.csv"
 
 class MyHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):

@@ -65,7 +65,7 @@
       ).join("\n");
     }
 
-    fetch("data.csv")
+    fetch("data/data.csv")
       .then(res => res.text())
       .then(csv => {
         const rows = parseCSV(csv);
