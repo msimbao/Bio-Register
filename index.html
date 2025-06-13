@@ -123,10 +123,6 @@
             const colName = headers[colIndex];
             const value = data[colIndex];
 
-            const item = data[colIndex]
-
-            console.log(item)
-
             if (colName === "Image") {
               const input = document.createElement('input');
               input.type = 'file';
@@ -151,7 +147,7 @@
                   // this.parentElement.appendChild(input);
                   // this.parentElement.appendChild(img); 
                   // this.parentElement.append(file.name)
-                  p.innerHTML = file.name             
+                  p.innerHTML = file.name;             
                 }
               });
 
@@ -174,7 +170,8 @@
             // this case `data: 0`.
             // render: (data, type, row) => '<img width="200px" src="http://localhost:8000/images/' + data  + '">' + ' (' + row[3] + ')',
             render: (data, type, row) => '<img width="300px" src="http://localhost:8000/images/' + data  + '">',
-            targets: 0
+            targets: 0,
+            disabled:true,
         },
         // {
         //     // The `data` parameter refers to the data for the cell (defined by the
@@ -188,6 +185,7 @@
             render: (data, type, row) =>  Intl.NumberFormat('en', { maximumSignificantDigits: 15 }).format(data),
             targets: 5
         },
+
       ],
       "language": {
             "lengthMenu": '_MENU_ bản ghi trên trang',
