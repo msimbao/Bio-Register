@@ -11,11 +11,21 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      text-align:center;
     }
    
     button {
       margin-top: 10px;
       padding: 8px 16px;
+
+    }
+
+    .topHeader{
+      width:100%;
+      margin:20px;
+      padding:20px;
+      text-align:center;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     }
 
         img.thumb {
@@ -28,11 +38,14 @@
     input.img-upload {
       width: 100%;
     }
-  }
+  
       #dt-search-0 {
-        float: left !important;
-        width: 500px;
+        /* float: left !important; */
+        margin-right:30%;
+        width: 40%;
+        margin-top:20px;
         border-radius: 5px;
+        
       }
       label {
         font-size: 20px !important;
@@ -44,6 +57,10 @@
         border-radius:5px;
         border:1px solid #333;
       }
+      .innerImage{
+        width:400px;
+
+      }
       /* input[type="search"] {
       margin-top:10px;
       float: left;
@@ -53,7 +70,11 @@
   </style>
 </head>
 <body>
-  <h1>Christ Embassy Palm Drive</h1>
+
+  <div>
+    <h1>Christ Embassy Palm Drive</h1>
+  </div>
+  
   <h3>Bio-Register</h3>
   <button class="btn" id="saveBtn">💾 Save</button>
   <table id="csvTable" class="display" style="width:100%"></table>
@@ -93,7 +114,7 @@
         table = $('#csvTable').DataTable({    
           data: data,
           scrollCollapse: true,
-          scrollY: '500px',
+          scrollY: '450px',
           paging:false,
           altEditor:true,
           // fixedColumns:true,
@@ -113,7 +134,12 @@
         extend: 'selected', // Bind to Selected row
         text: 'Delete',
         name: 'delete'      // do not change name
-        }
+        },
+        {
+            text: 'Refresh',
+            name: 'refresh'      // do not change name
+        },
+        
     ],
     dom: 'Bfrtip',        // Needs button container
           columns: headers.map(h => ({ title: h })),
@@ -126,8 +152,9 @@
             if (colName === "Image") {
               const input = document.createElement('input');
               input.type = 'file';
-              input.className = 'img-upload';
+              input.className = 'img-upload form-control';
               input.accept = 'image/*';
+              
 
               const img = document.createElement('img');
               img.className = 'thumb';
@@ -164,27 +191,32 @@
           targets: '_all',
           defaultContent: ''
         },
-          {
-            // The `data` parameter refers to the data for the cell (defined by the
-            // `data` option, which defaults to the column being worked with, in
-            // this case `data: 0`.
-            // render: (data, type, row) => '<img width="200px" src="http://localhost:8000/images/' + data  + '">' + ' (' + row[3] + ')',
-            render: (data, type, row) => '<img width="300px" src="http://localhost:8000/images/' + data  + '">',
-            targets: 0,
-            disabled:true,
-        },
-        // {
+        //   {
         //     // The `data` parameter refers to the data for the cell (defined by the
         //     // `data` option, which defaults to the column being worked with, in
         //     // this case `data: 0`.
         //     // render: (data, type, row) => '<img width="200px" src="http://localhost:8000/images/' + data  + '">' + ' (' + row[3] + ')',
-        //     render: (data, type, row) => '<p>' + data  + '</p>',
-        //     targets: 0
+        //     render: (data, type, row) => '<img class="innerImage" src="http://localhost:8000/images/' + data  + '">',
+        //     targets: 0,
+        //     disabled:true,
         // },
            {
-            render: (data, type, row) =>  Intl.NumberFormat('en', { maximumSignificantDigits: 15 }).format(data),
+            render: (data, type, row) =>  String(data),
             targets: 5
         },
+              {
+        targets: 0,
+        orderable: false,
+        render: function (data, type, row, meta) {
+          return `<input type="file" class="file-input" data-row="${meta.row}" />`;
+        }
+      },
+      {
+        targets: 1,
+        render: function (data, type, row) {
+          return '<p>' + data + '</p>' + '<img width="200px" src="http://localhost:8000/images/' + data  + '">'; // just display raw text (file name)
+        }
+      }
 
       ],
       "language": {
@@ -196,6 +228,14 @@
                     "next": '<i class="fa fa-angle-right"></i>'
             }
         },
+        createdRow: function (row, data, dataIndex) {
+      // reattach file change event after row is created
+      $(row).find('.file-input').on('change', function () {
+        let fileName = this.files[0]?.name || "";
+        let rowIndex = $(this).data('row');
+        table.cell(rowIndex, 1).data(fileName).draw(false);
+      });
+    }
         });
       });
 
@@ -228,6 +268,8 @@
         }
       });
     });
+
+    $('#csvTable').addClass('cell-border')
   </script>
 </body>
 </html>
