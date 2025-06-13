@@ -190,14 +190,14 @@
                     '<div class="modal-content">' +
                     '<div class="modal-header">' +
                     '<h4 style="padding-top: 1rem;padding-left: 1rem;" class="modal-title"></h4>' +
-                    '<button style="margin: initial;" type="button" class="close close-button" data-dismiss="modal" data-close aria-label="' + this.language.modalClose + '">' +
-                    '<span aria-hidden="true">&times;</span></button>' +
+                    // '<button style="margin: initial;" type="button" class="close close-button" data-dismiss="modal" data-close aria-label="' + this.language.modalClose + '">' +
+                    // '<span aria-hidden="true">&times;</span></button>' +
                     '</div>' +
                     '<div class="modal-body">' +
                     '<p></p>' +
                     '</div>' +
-                    '<div class="modal-footer">' +
-                    '</div>' +
+                    // '<div class="modal-footer">' +
+                    // '</div>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
