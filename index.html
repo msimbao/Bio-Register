@@ -6,7 +6,7 @@
   <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"> -->
     <link rel="stylesheet" href="static/datatables/datatables.css">
   <link rel="stylesheet" href="static/foundation/css/foundation.min.css">
-    <link rel="stylesheet" href="static/bootstrap/js/bootstrap.min.js">
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
 
 
   <style>
@@ -14,9 +14,9 @@
       font-family: Arial, sans-serif;
       margin: 20px;
     }
-    td[contenteditable="true"] {
+    /* td[contenteditable="true"] {
       background-color: #f9f9f9;
-    }
+    } */
     button {
       margin-top: 10px;
       padding: 8px 16px;
@@ -32,6 +32,16 @@
     input.img-upload {
       width: 100%;
     }
+  }
+      #dt-search-0 {
+        float: left !important;
+        width: 500px;
+        border-radius: 5px;
+      }
+      label {
+        font-size: 20px !important;
+        display: none;
+      }
   </style>
 </head>
 <body>
@@ -97,11 +107,14 @@
         })
       })
     },
+          
           data: data,
+          scrollCollapse: true,
+          scrollY: '500px',
+          paging:false,
           altEditor:true,
           dom: 'Bfrtip',        // Needs button container
     select: 'single',
-    responsive: true,
     altEditor: true,     // Enable altEditor
     buttons: [
         {
@@ -183,7 +196,16 @@
             render: (data, type, row) =>  Intl.NumberFormat('en', { maximumSignificantDigits: 15 }).format(data),
             targets: 0
         },
-      ]
+      ],
+      "language": {
+            "lengthMenu": '_MENU_ bản ghi trên trang',
+                "search": '<i class="fa fa-search"></i>',
+                "searchPlaceholder": " 🔍︎ Type Here To Search....",
+                "paginate": {
+                "previous": '<i class="fa fa-angle-left"></i>',
+                    "next": '<i class="fa fa-angle-right"></i>'
+            }
+        },
         });
       });
 
