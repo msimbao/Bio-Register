@@ -1,276 +1,245 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>CSV Editor</title>
-    <link rel="stylesheet" href="static/datatables/datatables.css">
-  <link rel="stylesheet" href="static/foundation/css/foundation.min.css">
-    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CSV Editor</title>
+    
+    <!-- All External Third Party Css -->
+    <link rel="stylesheet" href="static/css/bootstrap.css" />
+    <link rel="stylesheet" href="static/css/datatables.buttons.css" />
+    <link rel="stylesheet" href="static/css/datatables.select.css" />
+    <link rel="stylesheet" href="static/css/datatables.responsive.css" />
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      text-align:center;
-    }
-   
-    button {
-      margin-top: 10px;
-      padding: 8px 16px;
+    <link rel="stylesheet" href="static/datatables/datatables.css" />
 
-    }
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        text-align: center;
+      }
 
-    .topHeader{
-      width:100%;
-      margin:20px;
-      padding:20px;
-      text-align:center;
-      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    }
+      button {
+        margin-top: 10px;
+        padding: 8px 16px;
+      }
 
-        img.thumb {
-      max-width: 60px;
-      max-height: 60px;
-      display: block;
-      margin: 0 auto;
-    }
+      .topHeader {
+        width: 100%;
+        margin: 20px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      }
 
-    input.img-upload {
-      width: 100%;
-    }
-  
+      img.thumb {
+        max-width: 60px;
+        max-height: 60px;
+        display: block;
+        margin: 0 auto;
+      }
+
+      input.img-upload {
+        width: 100%;
+      }
+
       #dt-search-0 {
         /* float: left !important; */
-        margin-right:30%;
+        margin-right: 30%;
         width: 40%;
-        margin-top:20px;
+        margin-top: 20px;
         border-radius: 5px;
-        
       }
       label {
         font-size: 20px !important;
         display: none;
       }
-      #saveBtn{
-        background-color:'grey';
-        color:'white';
-        border-radius:5px;
-        border:1px solid #333;
+      #saveBtn {
+        background-color: "grey";
+        color: "white";
+        border-radius: 5px;
+        border: 1px solid #333;
       }
-      .innerImage{
-        width:400px;
-
+      .innerImage {
+        width: 400px;
       }
-      /* input[type="search"] {
-      margin-top:10px;
-      float: left;
-      width: 300px !important;
-      font-size:
-      } */
-  </style>
-</head>
-<body>
 
-  <div>
-    <h1>Christ Embassy Palm Drive</h1>
-  </div>
-  
-  <h3>Bio-Register</h3>
-  <button class="btn" id="saveBtn">💾 Save</button>
-  <table id="csvTable" class="display" style="width:100%"></table>
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Christ Embassy Palm Drive</h1>
+    </div>
 
-  <script src="static/jquery/jquery.min.js"></script>
-  <script src="static/datatables/datatables.min.js"></script>
-  <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <h3>Bio-Register</h3>
+    <button class="btn" id="saveBtn">💾 Save</button>
+    <table id="csvTable" class="display" style="width: 100%"></table>
+
+    <script src="static/jquery/jquery.min.js" ></script>
+    <script src="static/jquery/jquery.migrate.js" ></script>
+
+    <script src="static/script/bootstrap.js" ></script>
+    
+    <script src="static/datatables/datatables.min.js"></script>
+    <!-- <script src="static/script/datatables.buttons.js" ></script>
+    <script src="static/script/datatables.select.js" ></script>
+
+    <script src="static/script/datatables.responsive.js" ></script> -->
     <script src="static/datatables/datatables.altEditor.js"></script>
 
 
-  <script>
-    let table;
-    let headers = [];
 
-    function parseCSV(text) {
-      return text.trim().split("\n").map(row => row.split(","));
-    }
+    <script>
+      let table;
+      let headers = [];
 
-    function arrayToCSV(data) {
-      return data.map(row =>
-        row.map(cell => {
-          cell = cell.trim();
-          const needsQuotes = /[",\n]/.test(cell);
-          const escaped = cell.replace(/"/g, '""');
-          return needsQuotes ? `"${escaped}"` : escaped;
-        }).join(",")
-      ).join("\n");
-    }
-
-    fetch("data/data.csv")
-      .then(res => res.text())
-      .then(csv => {
-        const rows = parseCSV(csv);
-        headers = rows[0];
-        const data = rows.slice(1);
-
-        table = $('#csvTable').DataTable({    
-          data: data,
-          scrollCollapse: true,
-          scrollY: '450px',
-          paging:false,
-          altEditor:true,
-          // fixedColumns:true,
-    select: 'single',
-    altEditor: true,     // Enable altEditor
-    buttons: [
-        {
-        text: 'Add',
-        name: 'add'        // do not change name
-        },
-        {
-        extend: 'selected', // Bind to Selected row
-        text: 'Edit',
-        name: 'edit'        // do not change name
-        },
-        {
-        extend: 'selected', // Bind to Selected row
-        text: 'Delete',
-        name: 'delete'      // do not change name
-        },
-        {
-            text: 'Refresh',
-            name: 'refresh'      // do not change name
-        },
-        
-    ],
-    dom: 'Bfrtip',        // Needs button container
-          columns: headers.map(h => ({ title: h })),
-          createdRow: function (row) {
-            $('td', row).attr('contenteditable', 'true');
-            $('td', row).each(function (colIndex, rowIndex) {
-            const colName = headers[colIndex];
-            const value = data[colIndex];
-
-            if (colName === "Image") {
-              const input = document.createElement('input');
-              input.type = 'file';
-              input.className = 'img-upload form-control';
-              input.accept = 'image/*';
-              
-
-              const img = document.createElement('img');
-              img.className = 'thumb';
-              img.style.display = 'none';
-       
-              const p = document.createElement('p');
-              p.innerHTML = ''
-
-              input.addEventListener('change', function () {
-                const file = this.files[0];
-                if (file) {
-                  const url = "http://localhost:8000/images/" + file.name
-                  img.src = url;
-                  img.style.display = 'block';
-                  // console.log(file.name)
-                  // this.parentElement.innerHTML = ''   
-                  // this.parentElement.appendChild(input);
-                  // this.parentElement.appendChild(img); 
-                  // this.parentElement.append(file.name)
-                  p.innerHTML = file.name;             
-                }
-              });
-
-              this.appendChild(input);
-              this.appendChild(img);
-              this.appendChild(p);
-            }
-            // } else {
-            //   $(this).html(`<input type="text" value="${value}">`);
-            // }
-          });
-           },
-        columnDefs: [{
-          targets: '_all',
-          defaultContent: ''
-        },
-        //   {
-        //     // The `data` parameter refers to the data for the cell (defined by the
-        //     // `data` option, which defaults to the column being worked with, in
-        //     // this case `data: 0`.
-        //     // render: (data, type, row) => '<img width="200px" src="http://localhost:8000/images/' + data  + '">' + ' (' + row[3] + ')',
-        //     render: (data, type, row) => '<img class="innerImage" src="http://localhost:8000/images/' + data  + '">',
-        //     targets: 0,
-        //     disabled:true,
-        // },
-           {
-            render: (data, type, row) =>  String(data),
-            targets: 5
-        },
-              {
-        targets: 0,
-        orderable: false,
-        render: function (data, type, row, meta) {
-          return `<input type="file" class="file-input" data-row="${meta.row}" />`;
-        }
-      },
-      {
-        targets: 1,
-        render: function (data, type, row) {
-          return '<p>' + data + '</p>' + '<img width="200px" src="http://localhost:8000/images/' + data  + '">'; // just display raw text (file name)
-        }
+      function parseCSV(text) {
+        return text
+          .trim()
+          .split("\n")
+          .map((row) => row.split(","));
       }
 
-      ],
-      "language": {
-            "lengthMenu": '_MENU_ bản ghi trên trang',
-                "search": '<i class="fa fa-search"></i>',
-                "searchPlaceholder": " 🔍︎ Type Here To Search....",
-                "paginate": {
-                "previous": '<i class="fa fa-angle-left"></i>',
-                    "next": '<i class="fa fa-angle-right"></i>'
-            }
-        },
-        createdRow: function (row, data, dataIndex) {
-      // reattach file change event after row is created
-      $(row).find('.file-input').on('change', function () {
-        let fileName = this.files[0]?.name || "";
-        let rowIndex = $(this).data('row');
-        table.cell(rowIndex, 1).data(fileName).draw(false);
-      });
-    }
+      function arrayToCSV(data) {
+        return data
+          .map((row) =>
+            row
+              .map((cell) => {
+                cell = cell.trim();
+                const needsQuotes = /[",\n]/.test(cell);
+                const escaped = cell.replace(/"/g, '""');
+                return needsQuotes ? `"${escaped}"` : escaped;
+              })
+              .join(",")
+          )
+          .join("\n");
+      }
+
+      fetch("data/data.csv")
+        .then((res) => res.text())
+        .then((csv) => {
+          const rows = parseCSV(csv);
+          headers = rows[0];
+          const data = rows.slice(1);
+
+          table = $("#csvTable").DataTable({
+            data: data,
+            scrollCollapse: true,
+            scrollY: "450px",
+            scrollX: true,
+            paging: false,
+            searching: true,
+            select: "single",
+            altEditor: true, // Enable altEditor
+            buttons: [
+              {
+                text: "Add",
+                name: "add", // do not change name
+              },
+              {
+                extend: "selected", // Bind to Selected row
+                text: "Edit",
+                name: "edit", // do not change name
+              },
+              {
+                extend: "selected", // Bind to Selected row
+                text: "Delete",
+                name: "delete", // do not change name
+              },
+            ],
+            dom: "Bfrtip", // Needs button container
+            columns: headers.map((h) => ({ title: h })),
+            createdRow: function (row) {
+              $("td", row).attr("contenteditable", "true");
+            },
+            columnDefs: [
+              {
+                targets: "_all",
+                defaultContent: "",
+              },
+              {
+                targets: [0, 1],
+                disabled: true,
+              },
+              {
+                render: (data, type, row) => String(data),
+                targets: 5,
+              },
+              {
+                targets: 0,
+                orderable: false,
+                render: function (data, type, row, meta) {
+                  return `<input type="file" class="file-input" data-row="${meta.row}" />`;
+                },
+              },
+              {
+                targets: 1,
+                render: function (data, type, row) {
+                  return (
+                    "<p>" +
+                    data +
+                    "</p>" +
+                    '<img width="200px" src="http://localhost:8000/images/' +
+                    data +
+                    '">'
+                  ); // just display raw text (file name)
+                },
+              },
+            ],
+            language: {
+              lengthMenu: "_MENU_ bản ghi trên trang",
+              search: '<i class="fa fa-search"></i>',
+              searchPlaceholder: " 🔍︎ Type Here To Search....",
+              paginate: {
+                previous: '<i class="fa fa-angle-left"></i>',
+                next: '<i class="fa fa-angle-right"></i>',
+              },
+            },
+            createdRow: function (row, data, dataIndex) {
+              // reattach file change event after row is created
+              $(row)
+                .find(".file-input")
+                .on("change", function () {
+                  let fileName = this.files[0]?.name || "";
+                  let rowIndex = $(this).data("row");
+                  table.cell(rowIndex, 1).data(fileName).draw(false);
+                });
+            },
+          });
+        });
+
+      document.getElementById("saveBtn").addEventListener("click", () => {
+        const updatedData = [];
+        const dtData = table.rows().nodes(); // all rows as DOM elements
+
+        dtData.each(function (row) {
+          const rowData = [];
+          $(row)
+            .find("td")
+            .each(function () {
+              rowData.push($(this).text().trim());
+            });
+          if (rowData.length > 0) updatedData.push(rowData);
+        });
+
+        const csvContent = arrayToCSV([headers, ...updatedData]);
+
+        fetch("/save", {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain",
+          },
+          body: csvContent,
+        }).then((res) => {
+          if (res.ok) {
+            alert("✅ CSV saved successfully!");
+          } else {
+            alert("❌ Error saving CSV.");
+          }
         });
       });
 
-    document.getElementById("saveBtn").addEventListener("click", () => {
-      const updatedData = [];
-      const dtData = table.rows().nodes(); // all rows as DOM elements
-
-      dtData.each(function(row) {
-        const rowData = [];
-        $(row).find("td").each(function () {
-          rowData.push($(this).text().trim());
-        });
-        if (rowData.length > 0) updatedData.push(rowData);
-      });
-
-      const csvContent = arrayToCSV([headers, ...updatedData]);
-
-      fetch("/save", {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain"
-        },
-        body: csvContent
-      })
-      .then(res => {
-        if (res.ok) {
-          alert("✅ CSV saved successfully!");
-        } else {
-          alert("❌ Error saving CSV.");
-        }
-      });
-    });
-
-    $('#csvTable').addClass('cell-border')
-  </script>
-</body>
+      $("#csvTable").addClass("cell-border");
+    </script>
+  </body>
 </html>
-
