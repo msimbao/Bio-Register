@@ -17,6 +17,7 @@
         font-family: Arial, sans-serif;
         margin: 20px;
         text-align: center;
+        background:lightblue;
       }
 
       button {
@@ -32,11 +33,33 @@
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
       }
 
-      img.thumb {
-        max-width: 60px;
-        max-height: 60px;
+      img {
+        max-width: 150px;
+        /* max-height: 60px; */
         display: block;
         margin: 0 auto;
+        border-radius:10px;
+      }
+
+      td{
+        margin:5px;
+        min-width:150px;
+        /* border:1px solid #eee; */
+        padding:10px;
+      }
+
+      tr:nth-child(even) {
+       background-color: #D6EEEE;
+      }
+
+      th{
+        margin:5px;
+        min-width:150px;
+        color:white;
+        background:cornflowerblue;
+        border:1px solid #eee;
+        padding:10px;
+        /* border-radius:3px; */
       }
 
       input.img-upload {
@@ -44,11 +67,12 @@
       }
 
       #dt-search-0 {
-        /* float: left !important; */
-        margin-right: 30%;
-        width: 40%;
-        margin-top: 20px;
-        border-radius: 5px;
+        /* position: absolute;  */
+        width: 30%;
+        height:35px;
+        margin-right:10%;
+        border-radius:20px;
+        margin-top:10px;
       }
       label {
         font-size: 20px !important;
@@ -57,23 +81,63 @@
       #saveBtn {
         background-color: "grey";
         color: "white";
-        border-radius: 5px;
+        border-radius: 20px;
         border: 1px solid #333;
+        width:100px;
       }
       .innerImage {
         width: 400px;
+      }
+      #csvTable{
+        margin-top:30px;
+        border-radius:5px;
+      }
+      #topCard{
+        background:cornflowerblue;
+        color:white;
+        padding:10px;
+        border-radius:20px 20px 0 0;
+        width:100%;
+        font-weight: bold;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
+      }
+      #innerCard{
+        padding:20px;
+      }
+      #tableBody{
+        background-color: white;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        border-radius:20px;
+      }
+      .btn-group{
+        margin-bottom:10px;
+        z-index:3;
+        /* border-radius:10px; */
+      }
+      
+      #saveBtn{
+        background-color: cornflowerblue;
+        color:white;
+        border:0px;
       }
 
     </style>
   </head>
   <body>
-    <div>
-      <h1>Christ Embassy Palm Drive</h1>
+
+    <div id="tableBody">
+
+    <div id="topCard">
+    <h1>CHRIST EMBASSY PALM DRIVE</h1>
     </div>
 
+    <div id="innerCard">
     <h3>Bio-Register</h3>
-    <button class="btn" id="saveBtn">💾 Save</button>
+    <button class="btn" id="saveBtn">Save</button>
     <table id="csvTable" class="display" style="width: 100%"></table>
+    </div>
+    </div>
 
     <script src="static/jquery/jquery.min.js" ></script>
     <script src="static/jquery/jquery.migrate.js" ></script>
@@ -81,13 +145,9 @@
     <script src="static/script/bootstrap.js" ></script>
     
     <script src="static/datatables/datatables.min.js"></script>
-    <!-- <script src="static/script/datatables.buttons.js" ></script>
-    <script src="static/script/datatables.select.js" ></script>
-
-    <script src="static/script/datatables.responsive.js" ></script> -->
     <script src="static/datatables/datatables.altEditor.js"></script>
 
-
+      
 
     <script>
       let table;
@@ -125,7 +185,7 @@
           table = $("#csvTable").DataTable({
             data: data,
             scrollCollapse: true,
-            scrollY: "450px",
+            scrollY: "550px",
             scrollX: true,
             paging: false,
             searching: true,
@@ -155,7 +215,7 @@
             columnDefs: [
               {
                 targets: "_all",
-                defaultContent: "",
+                defaultContent: "----",
               },
               {
                 targets: [0, 1],
