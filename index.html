@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>CSV Editor</title>
-    
+    <title>Bio Register</title>
+
     <!-- All External Third Party Css -->
     <link rel="stylesheet" href="static/css/bootstrap.css" />
     <link rel="stylesheet" href="static/css/datatables.buttons.css" />
@@ -13,11 +13,41 @@
     <link rel="stylesheet" href="static/datatables/datatables.css" />
 
     <style>
+      @font-face {
+        font-family: "pacifico";
+        src: local("static/fonts/Pacifico/Pacifico-Regular.ttf");
+      }
+
       body {
         font-family: Arial, sans-serif;
         margin: 20px;
         text-align: center;
-        background:lightblue;
+        background: #50c9c3; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to bottom,
+          #96deda,
+          #50c9c3
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to bottom,
+          #96deda,
+          #50c9c3
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      }
+
+      .dt-scroll-body {
+        border: 1px solid #fff;
+      }
+
+      #topCard {
+        background: #3066be;
+        color: white;
+        padding: 10px;
+        border-radius: 20px 20px 0 0;
+        width: 100%;
+        font-weight: bold;
+        font-family: "Calibri";
+        /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
       }
 
       button {
@@ -38,27 +68,29 @@
         /* max-height: 60px; */
         display: block;
         margin: 0 auto;
-        border-radius:10px;
+        border-radius: 10px;
       }
 
-      td{
-        margin:5px;
-        min-width:150px;
-        /* border:1px solid #eee; */
-        padding:10px;
+      td {
+        margin: 5px;
+        min-width: 150px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
       }
 
       tr:nth-child(even) {
-       background-color: #D6EEEE;
+        background-color: #eee;
       }
 
-      th{
-        margin:5px;
-        min-width:150px;
-        color:white;
-        background:cornflowerblue;
-        border:1px solid #eee;
-        padding:10px;
+      th {
+        margin: 5px;
+        min-width: 150px;
+        color: white;
+        background: cornflowerblue;
+        border: 1px solid #eee;
+        padding: 10px;
         /* border-radius:3px; */
       }
 
@@ -69,10 +101,11 @@
       #dt-search-0 {
         /* position: absolute;  */
         width: 30%;
-        height:35px;
-        margin-right:10%;
-        border-radius:20px;
-        margin-top:10px;
+        height: 35px;
+        margin-right: 10%;
+        border-radius: 20px;
+        margin-top: 10px;
+        font-size: 15px;
       }
       label {
         font-size: 20px !important;
@@ -83,71 +116,63 @@
         color: "white";
         border-radius: 20px;
         border: 1px solid #333;
-        width:100px;
+        width: 100px;
+        font-size: 20px;
+        font-family: "Courier New";
       }
       .innerImage {
         width: 400px;
       }
-      #csvTable{
-        margin-top:30px;
-        border-radius:5px;
-      }
-      #topCard{
-        background:cornflowerblue;
-        color:white;
-        padding:10px;
-        border-radius:20px 20px 0 0;
-        width:100%;
-        font-weight: bold;
-        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
-      }
-      #innerCard{
-        padding:20px;
-      }
-      #tableBody{
-        background-color: white;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-        border-radius:20px;
-      }
-      .btn-group{
-        margin-bottom:10px;
-        z-index:3;
-        /* border-radius:10px; */
-      }
-      
-      #saveBtn{
-        background-color: cornflowerblue;
-        color:white;
-        border:0px;
+      #csvTable {
+        margin-top: 30px;
+        border-radius: 5px;
       }
 
+      #innerCard {
+        padding: 20px;
+      }
+      #tableBody {
+        background-color: white;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+      }
+      .btn-group {
+        margin-bottom: 10px;
+        z-index: 3;
+        /* border-radius:10px; */
+        font-size: 20px;
+      }
+
+      #saveBtn {
+        background-color: #377771;
+        color: white;
+        font-weight: bold;
+        border: 0px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      }
     </style>
   </head>
   <body>
-
     <div id="tableBody">
+      <div id="topCard">
+        <h1>BIO-REGISTER</h1>
+      </div>
 
-    <div id="topCard">
-    <h1>CHRIST EMBASSY PALM DRIVE</h1>
+      <div id="innerCard">
+        <!-- <h3>Bio-Register</h3> -->
+        <button class="btn" id="saveBtn">SAVE</button>
+
+        <table id="csvTable" class="display" style="width: 100%"></table>
+      </div>
     </div>
 
-    <div id="innerCard">
-    <h3>Bio-Register</h3>
-    <button class="btn" id="saveBtn">Save</button>
-    <table id="csvTable" class="display" style="width: 100%"></table>
-    </div>
-    </div>
+    <script src="static/jquery/jquery.min.js"></script>
+    <script src="static/jquery/jquery.migrate.js"></script>
 
-    <script src="static/jquery/jquery.min.js" ></script>
-    <script src="static/jquery/jquery.migrate.js" ></script>
+    <script src="static/script/bootstrap.js"></script>
 
-    <script src="static/script/bootstrap.js" ></script>
-    
     <script src="static/datatables/datatables.min.js"></script>
     <script src="static/datatables/datatables.altEditor.js"></script>
-
-      
 
     <script>
       let table;
@@ -184,6 +209,23 @@
 
           table = $("#csvTable").DataTable({
             data: data,
+            columnControl: [
+              {
+                target: 0,
+                content: [
+                  "order",
+                  ["title", "orderAsc", "orderDesc", "searchList"],
+                ],
+              },
+              {
+                target: 1,
+                content: ["search"],
+              },
+            ],
+            ordering: {
+              handler: true,
+              indicators: true,
+            },
             scrollCollapse: true,
             scrollY: "550px",
             scrollX: true,
@@ -191,6 +233,7 @@
             searching: true,
             select: "single",
             altEditor: true, // Enable altEditor
+
             buttons: [
               {
                 text: "Add",
@@ -215,7 +258,7 @@
             columnDefs: [
               {
                 targets: "_all",
-                defaultContent: "----",
+                defaultContent: "-",
               },
               {
                 targets: [0, 1],
@@ -246,10 +289,13 @@
                 },
               },
             ],
+            layout: {
+              topStart: { buttons: ["ccSearchClear"] },
+            },
             language: {
               lengthMenu: "_MENU_ bản ghi trên trang",
               search: '<i class="fa fa-search"></i>',
-              searchPlaceholder: " 🔍︎ Type Here To Search....",
+              searchPlaceholder: " 🔍︎ Type here to search....",
               paginate: {
                 previous: '<i class="fa fa-angle-left"></i>',
                 next: '<i class="fa fa-angle-right"></i>',
@@ -263,6 +309,30 @@
                   let fileName = this.files[0]?.name || "";
                   let rowIndex = $(this).data("row");
                   table.cell(rowIndex, 1).data(fileName).draw(false);
+                });
+            },
+            initComplete: function () {
+              // Add unique values to each <select>
+              this.api()
+                .columns()
+                .every(function () {
+                  const column = this;
+                  const select = $("select", column.footer());
+
+                  const uniqueValues = new Set();
+                  column.data().each(function (d) {
+                    if (d) uniqueValues.add(d);
+                  });
+
+                  [...uniqueValues].sort().forEach(function (val) {
+                    select.append(`<option value="${val}">${val}</option>`);
+                  });
+
+                  // Add filtering logic
+                  select.on("change", function () {
+                    const val = $.fn.dataTable.util.escapeRegex($(this).val());
+                    column.search(val ? `^${val}$` : "", true, false).draw();
+                  });
                 });
             },
           });
@@ -292,13 +362,14 @@
           body: csvContent,
         }).then((res) => {
           if (res.ok) {
-            alert("✅ CSV saved successfully!");
+            alert("✅ Bio Register saved successfully!");
           } else {
             alert("❌ Error saving CSV.");
           }
         });
       });
 
+      $('#clear').on('click', () => $('thead select').val(''));
       $("#csvTable").addClass("cell-border");
     </script>
   </body>
