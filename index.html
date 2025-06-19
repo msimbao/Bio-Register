@@ -68,7 +68,9 @@
         /* max-height: 60px; */
         display: block;
         margin: 0 auto;
-        border-radius: 10px;
+        border-radius: 2px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        border: 5px solid #eee;
       }
 
       td {
@@ -111,15 +113,6 @@
         font-size: 20px !important;
         display: none;
       }
-      #saveBtn {
-        background-color: "grey";
-        color: "white";
-        border-radius: 20px;
-        border: 1px solid #333;
-        width: 100px;
-        font-size: 20px;
-        font-family: "Courier New";
-      }
       .innerImage {
         width: 400px;
       }
@@ -144,10 +137,13 @@
       }
 
       #saveBtn {
-        background-color: #377771;
+        background-color: #241023;
         color: white;
         font-weight: bold;
         border: 0px;
+        border-radius: 20px;
+        font-size: 20px;
+        width: 200px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
       }
     </style>
@@ -214,14 +210,15 @@
                 target: 0,
                 content: [
                   "order",
-                  ["title", "orderAsc", "orderDesc", "searchList"],
+                  ["title", "orderAsc", "orderDesc", "searchList",'searchClear'],
                 ],
               },
-              {
-                target: 1,
-                content: ["search"],
-              },
+              // {
+              //   target: 1,
+              //   content: ["search"],
+              // },
             ],
+
             ordering: {
               handler: true,
               indicators: true,
@@ -233,7 +230,9 @@
             searching: true,
             select: "single",
             altEditor: true, // Enable altEditor
-
+            layout: {
+                  topStart: 'buttons'
+              },
             buttons: [
               {
                 text: "Add",
@@ -249,6 +248,10 @@
                 text: "Delete",
                 name: "delete", // do not change name
               },
+              
+                "ccSearchClear"
+              
+              
             ],
             dom: "Bfrtip", // Needs button container
             columns: headers.map((h) => ({ title: h })),
@@ -279,19 +282,16 @@
                 targets: 1,
                 render: function (data, type, row) {
                   return (
-                    "<p>" +
-                    data +
-                    "</p>" +
                     '<img width="200px" src="http://localhost:8000/images/' +
                     data +
-                    '">'
+                    '">' +
+                    "<p>" +
+                    data +
+                    "</p>"
                   ); // just display raw text (file name)
                 },
               },
             ],
-            layout: {
-              topStart: { buttons: ["ccSearchClear"] },
-            },
             language: {
               lengthMenu: "_MENU_ bản ghi trên trang",
               search: '<i class="fa fa-search"></i>',
@@ -309,30 +309,6 @@
                   let fileName = this.files[0]?.name || "";
                   let rowIndex = $(this).data("row");
                   table.cell(rowIndex, 1).data(fileName).draw(false);
-                });
-            },
-            initComplete: function () {
-              // Add unique values to each <select>
-              this.api()
-                .columns()
-                .every(function () {
-                  const column = this;
-                  const select = $("select", column.footer());
-
-                  const uniqueValues = new Set();
-                  column.data().each(function (d) {
-                    if (d) uniqueValues.add(d);
-                  });
-
-                  [...uniqueValues].sort().forEach(function (val) {
-                    select.append(`<option value="${val}">${val}</option>`);
-                  });
-
-                  // Add filtering logic
-                  select.on("change", function () {
-                    const val = $.fn.dataTable.util.escapeRegex($(this).val());
-                    column.search(val ? `^${val}$` : "", true, false).draw();
-                  });
                 });
             },
           });
@@ -369,8 +345,7 @@
         });
       });
 
-      $('#clear').on('click', () => $('thead select').val(''));
-      $("#csvTable").addClass("cell-border");
+      // $("#csvTable").addClass("cell-border");
     </script>
   </body>
 </html>
